@@ -86,7 +86,7 @@ class Bomb(pygame.sprite.Sprite):
 
 class Button():
     def __init__(self, x, y, image):
-        img = pygame.transform.scale(image, (93, 27))
+        img = pygame.transform.scale(image, (92, 36))
         self.image = img
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)

@@ -28,9 +28,9 @@ restart_img = pygame.image.load(image_dir + "restart.png")
 #game variables
 
 score = 0
-bomb_frequency = 1000 #miliseconds
+bomb_frequency = 500 #miliseconds
 last_bomb = pygame.time.get_ticks() - bomb_frequency
-game_over = False
+game_over = True
 
 #text setup
 
@@ -66,10 +66,10 @@ class Bomb(pygame.sprite.Sprite):
             self.velocity += 1.5
         if self.bomb_type == False:
             self.velocity += 1
-        if self.velocity > 8 and self.bomb_type == False:
+        if self.velocity > 5 and self.bomb_type == False:
+            self.velocity = 5
+        if self.velocity > 8 and self.bomb_type == True:
             self.velocity = 8
-        if self.velocity > 10 and self.bomb_type == True:
-            self.velocity = 10
         if self.rect.bottom <= 704:
             self.rect.y += int(self.velocity)
         if self.rect.bottom > 704:
@@ -134,7 +134,7 @@ while run:
                 bomb_group.add(generated_bomb)
             last_bomb = time_now
 
-    draw_text(str(score), font, white, int(screen_width * 0.9), int(screen_height * 0.95))
+    draw_text(str(score), font, white, int(screen_width * 0.8), int(screen_height * 0.95))
 
     if game_over == True:
         if restart_button.draw() == True:

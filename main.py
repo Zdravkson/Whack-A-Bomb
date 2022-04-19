@@ -31,6 +31,7 @@ score = 0
 bomb_frequency = 500 #miliseconds
 last_bomb = pygame.time.get_ticks() - bomb_frequency
 game_over = True
+clicked = False
 
 #text setup
 
@@ -78,7 +79,7 @@ class Bomb(pygame.sprite.Sprite):
             self.kill()
         mousepos = pygame.mouse.get_pos()
         if self.rect.collidepoint(mousepos):
-            if pygame.mouse.get_pressed()[0] == 1:
+            if pygame.mouse.get_pressed()[0] == 1 and clicked == False:
                 global score
                 score += 1
                 self.kill()
@@ -119,7 +120,13 @@ while run:
     bomb_group.draw(screen)
     bomb_group.update()
 
-    print(game_over)
+    if pygame.mouse.get_pressed()[0] == 1:
+        clicked = True
+    if pygame.mouse.get_pressed()[0] == 0:
+        clicked = False
+
+    print(clicked) 
+
 
     if game_over == False:
         time_now = pygame.time.get_ticks()

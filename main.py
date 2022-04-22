@@ -58,11 +58,26 @@ class Bomb(pygame.sprite.Sprite):
             img = pygame.image.load(image_dir + "nuke.png")
         img = pygame.transform.scale(img, (64, 64))
         self.image = img
+        self.death_images = []
+        self.death_images.append(pygame.image.load(image_dir + "explosion_1.png"))
+        self.death_images.append(pygame.image.load(image_dir + "explosion_2.png"))
+        self.death_images.append(pygame.image.load(image_dir + "explosion_3.png"))
+        self.death_images[0] = pygame.transform.scale(self.death_images[0], (64, 64))
+        self.death_images[1] = pygame.transform.scale(self.death_images[1], (64, 64))
+        self.death_images[2] = pygame.transform.scale(self.death_images[2], (64, 64))
+        self.current_image = 0
         self.rect = self.image.get_rect()
         self.rect.center = [x, y]
         self.velocity = 0
-    
+        self.is_dead = False
+
     def update(self):
+        if self.is_dead == True:
+            self.current_image += 0.3
+            if self.current_image >= len(self.death_images):
+                self.current_image = len(self.death_images) - 1
+                self.kill()
+            self.image = self.death_images[int(self.current_image)]
         if self.bomb_type == True:
             self.velocity += 1.5
         if self.bomb_type == False:
@@ -76,13 +91,13 @@ class Bomb(pygame.sprite.Sprite):
         if self.rect.bottom > 704:
             global game_over
             game_over = True
-            self.kill()
+            self.is_dead = True
         mousepos = pygame.mouse.get_pos()
         if self.rect.collidepoint(mousepos):
             if pygame.mouse.get_pressed()[0] == 1 and clicked == False:
                 global score
                 score += 1
-                self.kill()
+                self.is_dead = True
 
 class Button():
     def __init__(self, x, y, image):

@@ -24,6 +24,8 @@ image_dir = file_dir + "/sprite_images/"
 background_img = pygame.image.load(image_dir + "background.png")
 ground_img = pygame.image.load(image_dir + "grass_ground.png")
 restart_img = pygame.image.load(image_dir + "restart.png")
+radar_img1 = pygame.image.load(image_dir + "radar_on.png")
+radar_img2 = pygame.image.load(image_dir + "radar_off.png")
 
 #game variables
 
@@ -32,6 +34,7 @@ bomb_frequency = 500 #miliseconds
 last_bomb = pygame.time.get_ticks() - bomb_frequency
 game_over = True
 clicked = False
+radar = False
 
 #text setup
 
@@ -120,9 +123,26 @@ class Button():
 
         return action
 
+class Radar():
+    def __init__(self, x, y):
+        img = pygame.transform.scale(radar_img1, (64, 64))
+        self.image = img
+        self.rect = self.image.get_rect()
+        self.rect.center = (x, y)
+
+    def update(self):
+        if radar == True:
+            img = pygame.transform.scale(radar_img1, (48, 48))
+            self.image = img
+        else:
+            img = pygame.transform.scale(radar_img2, (48, 48))
+            self.image = img
+        screen.blit(self.image, (self.rect.x, self.rect.y)) 
+
 bomb_group = pygame.sprite.Group()
 
 restart_button = Button(int(screen_width / 2), int(screen_height / 2), restart_img)
+radar_object = Radar(50, int(screen_height * 0.97))
 
 run = True
 while run:
@@ -135,13 +155,19 @@ while run:
     bomb_group.draw(screen)
     bomb_group.update()
 
+    temp = False
+    for b in bomb_group:
+        if b.bomb_type == True:
+            temp = True
+
+    radar = temp
+
+    radar_object.update()
+
     if pygame.mouse.get_pressed()[0] == 1:
         clicked = True
     if pygame.mouse.get_pressed()[0] == 0:
         clicked = False
-
-    print(clicked) 
-
 
     if game_over == False:
         time_now = pygame.time.get_ticks()

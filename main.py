@@ -84,7 +84,7 @@ class Bomb(pygame.sprite.Sprite):
         if self.bomb_type == True:
             self.velocity += 1.5
         if self.bomb_type == False:
-            self.velocity += 1
+            self.velocity += 1.5
         if self.velocity > 5 and self.bomb_type == False:
             self.velocity = 5
         if self.velocity > 8 and self.bomb_type == True:
@@ -173,12 +173,12 @@ while run:
         time_now = pygame.time.get_ticks()
         if time_now - last_bomb > bomb_frequency:
             bomb_position = random.randint(32, screen_width - 32)
-            bomb_type_num = random.randint(1, 9)
+            bomb_type_num = random.randint(1, 9) #1 in 9 chances to spawn
             if bomb_type_num == 9:
-                generated_bomb = Bomb(bomb_position, -100, True)
+                generated_bomb = Bomb(bomb_position, -200, True)
                 bomb_group.add(generated_bomb)
             else:
-                generated_bomb = Bomb(bomb_position, -100, False)
+                generated_bomb = Bomb(bomb_position, -200, False)
                 bomb_group.add(generated_bomb)
             last_bomb = time_now
 

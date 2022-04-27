@@ -89,6 +89,8 @@ class Bomb(pygame.sprite.Sprite):
             self.velocity = 5
         if self.velocity > 8 and self.bomb_type == True:
             self.velocity = 8
+        if self.is_dead == True:
+            self.velocity = 0
         if self.rect.bottom <= 704:
             self.rect.y += int(self.velocity)
         if self.rect.bottom > 704:

@@ -26,6 +26,7 @@ ground_img = pygame.image.load(image_dir + "grass_ground.png")
 restart_img = pygame.image.load(image_dir + "restart.png")
 radar_img1 = pygame.image.load(image_dir + "radar_on.png")
 radar_img2 = pygame.image.load(image_dir + "radar_off.png")
+cursor_img = pygame.image.load(image_dir + "target_sight.png")
 
 #game variables
 
@@ -141,10 +142,24 @@ class Radar():
             self.image = img
         screen.blit(self.image, (self.rect.x, self.rect.y)) 
 
+class Cursor():
+    def __init__(self, x, y):
+        img = pygame.transform.scale(cursor_img, (32, 32))
+        self.image = img
+        self.rect = self.image.get_rect()
+        self.rect.center = (x, y)
+
+    def update(self):
+        pos = pygame.mouse.get_pos()
+        screen.blit(self.image, (pos[0] - 16, pos[1] - 16)) 
+
+pygame.mouse.set_visible( False )
+
 bomb_group = pygame.sprite.Group()
 
 restart_button = Button(int(screen_width / 2), int(screen_height / 2), restart_img)
 radar_object = Radar(50, int(screen_height * 0.97))
+cursor_object = Cursor(int(screen_width / 2), int(screen_height / 2))
 
 run = True
 while run:
@@ -153,6 +168,8 @@ while run:
 
     screen.blit(background_img, (0, 0))
     screen.blit(ground_img, (0, 704))
+
+    cursor_object.update()
 
     bomb_group.draw(screen)
     bomb_group.update()
